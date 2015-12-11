@@ -4,10 +4,9 @@ hppi
 prerequisites:
 --------------
 
-Flask
+* Flask
+* Flask-Login
+* Flask-WTF
 
-Flask-Login
-
-Flask-WTF
 
 
