@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}    
+{% include 'loginform.html' %}
+<style>
+div.dataTables_wrapper {
+        margin-bottom: 3em;
+    }
+</style>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+	var nav = 0 ? 'r<"boxed"t>r' : 'ifr<"top"><"boxed"t> lpr<"clear">';
+	var aTable = $('table.display').dataTable( {
+	    "bRetrieve": true,
+	    "bProcessing": true,
+	    "bDestroy": true,
+	    "sDom":  nav,
+	    "fnRowCallback": function(nRow, aData, iDisplayIndex){
+                $("td:first", nRow).html(iDisplayIndex +1);
+               return nRow;
+            },
+	    "aoColumnDefs": [
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 0 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 1 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 2 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 3 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 4 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 5 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 6 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 7 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 8 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 9 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 10 ] },	      	      
+	      { "bSortable": false, "aTargets": [ 11 ] },  	         	      	      
+	      ],
+	    "columnDefs": [ {
+            "orderable": true,
+        } ],
+	    "aaSorting": [[0,'asc']],
+	    "iDisplayLength": 5,
+	    "aLengthMenu": [[5, 10, -1],[5, 10, 50]]
+		} );
+    } );
+</script>
+<div style="margin:5px 40px 10px 40px;">
+<table cellspacing="0" cellpadding="0" class="display dataTable" style="width:100%" id="staff">
+  <thead>
+	<tr style="font-weight: bold;">
+		<th>&nbsp;&nbsp;</th>
+		<th>Имя</th>
+		<th>Отчество</th>
+		<th>Фамилия</th>
+		<th>Email</th>
+		<th>Образование</th>
+		<th>Год </th>
+		<th>Д. Р.</th>
+		<th>Степень</th>
+		<th>Отдел </th>
+		<th>Публикаций</th>		
+		<th>Карточка</th>		
+	</tr>
+  </thead>
+  <tbody>	
+{% for entry in item %}
+	<tr class="gradeC">
+		<td>{{ loop.index }}</td>
+		<td>{{ entry.first_name }}</td>
+		<td>{{ entry.middle_name }}</td>
+		<td>{{ entry.surname }}</td>
+		<td>{{ entry.email }}</td>
+		<td>{{ entry.graduated }}</td>
+		<td>{{ entry.graduated_year|int }}</td>
+		<td>{{ entry.date_of_birth.strftime('%d-%m-%Y') }}</td>
+		<td>{{ entry.degree }}</td>
+		<td>{{ entry.lab }}</td>
+		<td>{{ entry.pubs }}</td>
+		<td><a href="/change/">Ред.</a></td>		
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>
+{% endblock %}
+

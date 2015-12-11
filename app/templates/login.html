@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div align="right" style="margin:10px 45px 0 0;"><a onClick="javascript:showDiv('less')" style="cursor:pointer;color:darkblue">Login</a></div>
+  <div style="display:none; position:absolute; right:100px;z-index:500;margin:5px;padding:5px;background:#fff;height:140px;" id="less" class="boxed_sh">
+    <div style="display:inline;float:right; margin:-2px 0px 0 0px;">
+        <a id = "ogif" onClick = "switchElSwitchImg('less', 'ogif');" style="cursor: pointer; border:0px; text-decoration: none;" >
+            <div style="color:#3F4659; font-size: 18px; margin-top:-2px" >×</div>
+        </a>
+    </div>
+    <div style="width:320px;" align="centre">
+    <form action="/login" method="POST" name="form">
+        <div>
+            {{ form.hidden_tag() }}
+            <div class="form-group" style="height:55px"><br>
+                <div style="display:inline;width:60px;float:left"><label class="control-label" for="email"></label>Email:</div>
+                <div style="display:inline;float:right; padding-right:15px">{{ form.email }}</div>
+            </div>
+            <div class="form-group" style="height:35px">
+                <div style="display:inline;width:60px;float:left"><label class="control-label" for="password"></label>Password:</div> 
+                <div style="display:inline;float:right; padding-right:15px">{{ form.password }}</div>
+            </div>
+            <button class="btn" style="text-align: right" type="submit">Submit</button>
+        </div>
+    </form>
+    </div>
+  </div>
+{% endblock %}
+

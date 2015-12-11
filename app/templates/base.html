@@ -1,0 +1,14 @@
+<!doctype html>
+	<title>HPPI {% block title %}{% endblock %}</title>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/hppi.css') }}">	
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/hppi-dataTables.css') }}">		
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>	
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>	
+	<script type="text/javascript" src="{{ url_for('static', filename='js/show-hide.js') }}"></script>
+    
+<html>
+<body style="background-color: white;">
+  <div id="content">{% block content %}{% endblock %}</div>
+</body>
+</html>
