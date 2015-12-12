@@ -5,13 +5,13 @@ prerequisites python modules:
 -----------------------------
 
 * to work with MS Excel files:
-	** xlrd
+  * xlrd
 * to work with MongoDB:
-	** pyMongo
+  * pyMongo
 * web-framework modules:
-	** Flask
-	** Flask-Login
-	** Flask-WTF
+  * Flask
+  * Flask-Login
+  * Flask-WTF
 
 
 
