@@ -1,12 +1,17 @@
 hppi
 ====
 
-prerequisites:
---------------
+prerequisites python modules:
+-----------------------------
 
-* Flask
-* Flask-Login
-* Flask-WTF
+* to work with MS Excel files:
+	** xlrd
+* to work with MongoDB:
+	** pyMongo
+* web-framework modules:
+	** Flask
+	** Flask-Login
+	** Flask-WTF
 
 
 

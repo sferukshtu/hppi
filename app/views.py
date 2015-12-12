@@ -5,9 +5,7 @@ from .forms import LoginForm
 from .auth import Auth
 
 
-@app.route('/')
-def index():
-    item = app.config['STAFF'].find()
+def makeform():
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
         user = app.config['STAFF'].find_one({"email": form.email.data})
@@ -17,20 +15,26 @@ def index():
             flash("Logged in successfully!", category='success')
             return redirect(request.args.get("next") or url_for("edit"))
         flash("Wrong username or password!", category='error')
+    return form
+
+
+@app.route('/')
+def index():
+    item = app.config['STAFF'].find()
+    form = makeform()
     return render_template('index.html', item=item, form=form)
+
+
+@app.route('/on_rating')
+def on_rating():
+    item = app.config['RATING'].find()
+    form = makeform()
+    return render_template('on_rating.html', item=item, form=form)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if request.method == 'POST' and form.validate_on_submit():
-        user = app.config['STAFF'].find_one({"email": form.email.data})
-        if user and Auth.validate_login(user['password'], form.password.data):
-            user_obj = Auth(user['email'])
-            login_user(user_obj)
-            flash("Logged in successfully!", category='success')
-            return redirect(request.args.get("next") or url_for("edit"))
-        flash("Wrong username or password!", category='error')
+    form = makeform()
     return render_template('login.html', title='login', form=form)
 
 

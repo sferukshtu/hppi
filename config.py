@@ -6,6 +6,7 @@ DB_NAME = 'hppi'
 
 DATABASE = MongoClient()[DB_NAME]
 STAFF = DATABASE.staff
+RATING = DATABASE.rating
 SETTINGS = DATABASE.settings
 
 DEBUG = True

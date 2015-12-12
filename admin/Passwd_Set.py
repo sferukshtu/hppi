@@ -7,9 +7,10 @@ from pymongo import MongoClient
 def main():
     # Connect to the DB
     collection = MongoClient()["hppi"]["staff"]
-    # Ask for data to store
+    # Data fields to create unless user exists
     data = {"surname": "", "first_name": "", "middle_name": "", "lab": "", "position": "",
             "date_of_birth": datetime.datetime(1900, 01, 01), "graduated": "", "graduated_year": "", "degree": ""}
+    # Ask for data to store
     email = raw_input("Enter email of the user: ")
     password = raw_input("Enter password for the user: ")
     pass_hash = generate_password_hash(password, method='pbkdf2:sha256')

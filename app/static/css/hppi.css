@@ -3,20 +3,51 @@ body {
     font-size: 12px; 
     padding: 0;
 }
+h2 {
+	font-size:13px;
+}
 .boxed {
-  -moz-border-radius: 7px;-khtml-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px;
-  border: 1px solid #7cabc6; margin: 38px 0 5px 3px; padding: 2px 2px 2px 2px;
+  -moz-border-radius: 7px;
+  -khtml-border-radius: 7px; 
+  -webkit-border-radius: 7px; 
+  border-radius: 7px;
+  border: 1px solid #7cabc6; 
+  margin: 38px 0 5px 3px; 
+  padding: 2px 2px 2px 2px;
 }
 .boxed_f {
-  -moz-border-radius: 7px;-khtml-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px;
-  border: 1px solid #7cabc6; margin: 0 0 1px 1px; padding: 4px;
+  -moz-border-radius: 7px;
+  -khtml-border-radius: 7px; 
+  -webkit-border-radius: 7px; 
+  border-radius: 7px;
+  border: 1px solid #7cabc6; 
+  margin: 0 0 1px 1px; 
+  padding: 4px;
 }
-.button {color:#151715;background-color:#89BDFF;line-height:20px;font-weight:bolder;font-size:11px;}
+.button {
+	color:#151715;
+	background-color:#89BDFF;
+	line-height:20px;
+	font-weight:bolder;
+	font-size:11px;
+}
 .boxed_sh {
-  -moz-border-radius: 7px;-khtml-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px;
-  border: 1px solid #7cabc6; margin: 15px 0 3px 3px; padding: 2px 2px 2px 2px;
+  -moz-border-radius: 7px;
+  -khtml-border-radius: 7px; 
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  border: 1px solid #7cabc6; 
+  margin: 15px 0 3px 3px; 
+  padding: 2px 2px 2px 2px;
   		box-shadow: 2px 2px 6px  #888;
 		-moz-box-shadow: 2px 2px 6px #888;
 		-webkit-box-shadow: 2px 2px 6px #888;
   background:#fff
+}
+a:link,a:visited {
+    color: #004155;
+    text-decoration: none;
+}
+a:hover,a:active {
+    color: #999; text-decoration: none;
 }
