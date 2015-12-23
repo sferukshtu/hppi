@@ -5,62 +5,7 @@
 {% endblock %}
 {% block content %}    
 {% include 'loginform.html' %}
-<style>
-div.dataTables_wrapper {
-        margin-bottom: 3em;
-    }
-</style>
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-	var nav = 0 ? 'r<"boxed"t>r' : 'ifr<"top"><"boxed"t> lpr<"clear">';
-	var aTable = $('table.display').dataTable( {
-	    // "bRetrieve": true,
-	    // "bProcessing": true,
-	    "bDestroy": true,
-	    "sDom":  nav,
-	    "fnRowCallback": function(nRow, aData, iDisplayIndex){
-                $("td:first", nRow).html(iDisplayIndex +1);
-               return nRow;
-            },
-	    "aoColumnDefs": [
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 0 ] },
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 1 ] },
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 2 ] },
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 3 ] },
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 4 ] },	         	      	      
-	      ],
-	    "columnDefs": [ {
-            "orderable": true,
-        } ],
-	    "aaSorting": [[0,'asc']],
-	    "iDisplayLength" : 20,
-	    "aLengthMenu": [[10, 20, -1],[10, 20, 50]]
-		} );
-    } );
-</script>
 <div style="margin:5px 40px 10px 40px;">
-<table cellspacing="0" cellpadding="0" class="display dataTable" style="width:100%" id="staff">
-  <thead>
-	<tr style="font-weight: bold;">
-		<th>&nbsp;&nbsp;</th>
-		<th>Наименование</th>
-		<th>Описание</th>
-		<th>Единица</th>
-		<th>Код</th>	
-	</tr>
-  </thead>
-  <tbody>	
-{% for entry in item %}
-	<tr class="gradeC">
-		<td>{{ loop.index }}</td>
-		<td>{{ entry.name }}</td>
-		<td>{{ entry.description }}</td>
-		<td>{{ entry.unit }}</td>
-		<td>{{ entry.code }}</td>			
-	</tr>
-{% endfor %}
-	</tbody>
-</table>
 {% include 'order.html' %}
 </div>
 {% endblock %}

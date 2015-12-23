@@ -9,12 +9,6 @@
 		document.getElementById(d).style.display = "block";
 	}
 
-	function showPh(id) {
-		document.getElementById(id).style.display="block";
-	}
-	function hidePh(id) {
-		document.getElementById(id).style.display="none";
-	}
 	var imgExp = "../imgs/expanded.gif";
 	var imgColl = "../imgs/collapsed.gif";
 	function switchElSwitchImg(el_id, img_id) {

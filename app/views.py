@@ -1,20 +1,23 @@
 from app import app, lm
 from flask import request, redirect, render_template, url_for, flash
 from flask.ext.login import login_user, logout_user, login_required
-from .forms import LoginForm
+from .forms import LoginForm, PersonForm
 from .auth import Auth
 
 
 def makeform():
-    form = LoginForm()
+    form = LoginForm(request.values, from_url=request.path)
+    # print form.errors
+    print form.validate_on_submit()
     if request.method == 'POST' and form.validate_on_submit():
         user = app.config['STAFF'].find_one({"email": form.email.data})
         if user and Auth.validate_login(user['password'], form.password.data):
             user_obj = Auth(user['email'])
             login_user(user_obj)
             flash("Logged in successfully!", category='success')
-            return redirect(request.args.get("next") or url_for("edit"))
-        flash("Wrong username or password!", category='error')
+            # return redirect(request.args.get("next") or url_for("edit"))
+        else:
+            flash("Wrong username or password!", category='error')
     return form
 
 
@@ -25,29 +28,44 @@ def index():
     return render_template('index.html', item=item, form=form)
 
 
-@app.route('/on_rating')
+@app.route('/on_rating/')
 def on_rating():
-    item = app.config['RATING'].find()
     form = makeform()
-    return render_template('on_rating.html', item=item, form=form)
+    return render_template('on_rating.html', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/card/staff:<email>')
+def card(email):
+    prs = app.config['STAFF'].find_one({"email": email})
+    return render_template('card.html', prs=prs)
+
+
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = makeform()
-    return render_template('login.html', title='login', form=form)
+    url = form.from_url.data
+    if url is not None and url != "/" and url != "":
+        url = url.strip("/")
+        return redirect(url_for(url))
+    else:
+        return redirect("/")
 
 
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     logout_user()
-    return redirect(url_for('/'))
+    return redirect("/")
 
 
-@app.route('/edit', methods=['GET', 'POST'])
+@app.route('/edit/staff:<email>', methods=['GET', 'POST'])
 @login_required
-def edit():
-    return render_template('edit.html')
+def edit(email):
+    prs = app.config['STAFF'].find_one({"email": email})
+    form = PersonForm(request.values, first_name=prs["first_name"], middle_name=prs["middle_name"],
+                                    surname=prs["surname"], email=prs["email"], graduated=prs["graduated"], 
+                                    graduated_year=prs["graduated_year"], date_of_birth=prs["date_of_birth"], 
+                                    degree=prs["degree"], lab=prs["lab"])
+    return render_template('edit.html', prs=prs, form=form)
 
 
 @lm.user_loader

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="margin:5px 40px 10px 40px; width:600px">
+    <h2>Карточка сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
+    {% if current_user.is_authenticated %}
+    <div align="right">
+    	<a href=/edit/staff:{{ prs.email }}>Редактировать</a>
+    </div>	
+    {% endif %}
+<table cellpadding="2" cellpadding="2" border="0">
+  <tbody>	
+	<tr width=150><td>Имя</td><td>{{ prs.first_name }}</td></tr>
+	<tr><td>Отчество</td><td>{{ prs.middle_name }}</td></tr>
+	<tr><td>Фамилия</td><td>{{ prs.surname }}</td></tr>
+	<tr><td>Email</td><td>{{ prs.email }}</td></tr>
+	<tr><td>Образование</td><td>{{ prs.graduated }}</td></tr>
+	<tr><td>Диплом</td><td>{{ prs.graduated_year }}</td></tr>
+	<tr><td>День Рождения</td><td>{{ prs.date_of_birth }}</td></tr>
+	<tr><td>Степень</td><td>{{ prs.degree }}</td></tr>
+	<tr><td>Лаборатория</td><td>{{ prs.lab }}</td></tr>
+	<tr><td>Публикации</td><td><a href=/pubs/staff:{{ prs.email }}>Публикации</a></td></tr>
+	</tr>
+	</tbody>
+<table>
+</table>
+</div>    
+{% endblock %}
