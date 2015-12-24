@@ -18,8 +18,8 @@ def fields(titles, collection):
 
 
 def main():
-    excel = raw_input("Enter excel file of staff's roster to load: ")
-    collection = raw_input("Enter collection (if empty staff collection will be loaded): ")
+    excel = raw_input("Enter excel file to load: ")
+    collection = raw_input("Enter collection (if empty staff collection will be populated): ")
     collection = collection if collection else 'staff'
     client = MongoClient("localhost", 27017)['hppi'][collection]
     rd = xlrd.open_workbook(excel)
@@ -36,17 +36,20 @@ def main():
                 else:
                     dt = row[el]
                 data[header[el]] = dt  # pack data in a dictionary data[name] = value
-            data["access"] = 1  # data access right by default (can edit only themselves)
-            data["graduated_year"] = int(data["graduated_year"])
-            if not re.match(r"^\S+@\S+\.\S+$", data["email"]):
-                print "No correct email for someone with the surname", data["surname"], "skipping"
-            else:
-                user = client.find_one({"email": data["email"]})
-                if not user:
-                    client.insert_one(data)  # filling mongodb's collection named "staff" with data
+            if collection == 'staff':
+                data["access"] = 1  # data access right by default (can edit only themselves)
+                data["graduated_year"] = int(data["graduated_year"])
+                if not re.match(r"^\S+@\S+\.\S+$", data["email"]):
+                    print "No correct email for someone with the surname", data["surname"], "skipping"
                 else:
-                    print "Staff member", data["surname"], "with email", data["email"], "already present in DB, entry is updated"
-                    client.update_one({'email': data["email"]}, {'$set': data})
+                    user = client.find_one({"email": data["email"]})
+                    if not user:
+                        client.insert_one(data)  # filling mongodb's collection named "staff" with data
+                    else:
+                        print "Staff member", data["surname"], "with email", data["email"], "already present in DB, entry is updated"
+                        client.update_one({'email': data["email"]}, {'$set': data})
+            else:
+                client.insert_one(data)
     else:
         print "Column names do not correspond to the specification!"
 
