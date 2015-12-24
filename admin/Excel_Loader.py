@@ -6,21 +6,26 @@ from pymongo import MongoClient
 """ db.staff.createIndex( { email: 1 }, { unique: true } )  """
 
 
-def fields(titles):
+def fields(titles, collection):
     """ Column names must be named only as below"""
-    names = ["surname", "first_name", "middle_name", "date_of_birth", "graduated",
-                        "graduated_year", "degree", "email", "position", "lab"]
+    if (collection == 'staff'):
+        names = ["surname", "first_name", "middle_name", "date_of_birth", "graduated",
+                            "graduated_year", "degree", "email", "position", "lab"]
+    else:
+        return 0
     is_identical = titles.union(set(names)) - titles.intersection(set(names))
     return len(is_identical)
 
 
 def main():
     excel = raw_input("Enter excel file of staff's roster to load: ")
-    client = MongoClient("localhost", 27017)['hppi']['staff']
+    collection = raw_input("Enter collection (if empty staff collection will be loaded): ")
+    collection = collection if collection else 'staff'
+    client = MongoClient("localhost", 27017)['hppi'][collection]
     rd = xlrd.open_workbook(excel)
     sheet = rd.sheet_by_index(0)
     header = sheet.row_values(0)  # column headers
-    if fields(set(header)) == 0:
+    if fields(set(header), collection) == 0:
         # client.drop()
         for rownum in range(1, sheet.nrows):
             row = sheet.row_values(rownum)  # row values
