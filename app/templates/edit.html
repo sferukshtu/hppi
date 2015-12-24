@@ -2,19 +2,24 @@
 {% block content %}
 <div style="margin:5px 40px 10px 40px; width:600px">
     <h2>Редактирование карточки сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
-    <form action="/login/" method="POST" name="form">
-<table cellpadding="2" cellpadding="2" border="0" style="margin-left:30px">
+    <div align="right">
+    	<a href=/card/staff:{{ prs.email }}>Посмотреть данные</a>
+    </div>	
+    <form action="/edit/staff:{{ prs.email }}" method="POST" name="form">
+{{ form.hidden_tag() }}
+{{ form.from_url }}
+<table cellpadding="2" cellspacing="2" border="0" style="margin-left:30px">
   <tbody>	
-	<tr><td style="width:150px">Имя</td><td>{{ form.first_name }}</td></tr>
-	<tr><td>Отчество</td><td>{{ form.middle_name }}</td></tr>
-	<tr><td>Фамилия</td><td>{{ form.surname }}</td></tr>
-	<tr><td>Email</td><td>{{ form.email }}</td></tr>
-	<tr><td>Образование</td><td>{{ form.graduated }}</td></tr>
-	<tr><td>Диплом</td><td>{{ form.graduated_year }}</td></tr>
-	<tr><td>День Рождения</td><td>{{ form.date_of_birth }}</td></tr>
-	<tr><td>Степень</td><td>{{ form.degree }}</td></tr>
-	<tr><td>Лаборатория</td><td>{{ form.lab }}</td></tr>
-	<tr><td><a href=/pubs/staff:{{ prs.email }}>Публикации</a></td><td><input type=file name=file></td></tr>
+	<tr><td style="width:150px"><label class="control-label" for="first_name"></label>Имя</td><td>{{ form.first_name }}</td></tr>
+	<tr><td><label class="control-label" for="middle_name"></label>Отчество</td><td>{{ form.middle_name }}</td></tr>
+	<tr><td><label class="control-label" for="surname"></label>Фамилия</td><td>{{ form.surname }}</td></tr>
+	<tr><td>Email</td><td>{{ prs.email }}</td></tr>
+	<tr><td><label class="control-label" for="graduated"></label>Образование</td><td>{{ form.graduated }}</td></tr>
+	<tr><td><label class="control-label" for="graduated_year"></label>Год Окончания</td><td>{{ form.graduated_year }}</td></tr>
+	<tr><td><label class="control-label" for="date_of_birth"></label>День Рождения</td><td> {{ form.date_of_birth }}</td></tr>
+	<tr><td><label class="control-label" for="degree"></label>Степень</td><td>{{ form.degree }}</td></tr>
+	<tr><td><label class="control-label" for="lab"></label>Лаборатория</td><td>{{ form.lab }}</td></tr>
+	<tr><td><a href="/pubs/staff:{{ prs.email }}">Публикации</a></td><td>{{ form.pubs }} </td></tr>
 	</tr>
 	</tbody>
 <table>
@@ -23,5 +28,4 @@
 	<button class="button" style="margin-left:500px" type="submit">Submit</button>
 </form>
 </table>
-  
 {% endblock %}

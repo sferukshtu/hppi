@@ -10,14 +10,17 @@
 <html>
 <body style="background-color: white;">
 {% include "flash.html" %}
-<div style="border:2px">
-	<ul class="nav ">
+{% if request.path != "/" %}
+<div style="position:absolute; padding: 0 4px 0 20px;">
+    	<a href="/">На главную страницу</a>
+</div>
+<div>
+{% endif %}
 	{% if current_user.is_authenticated %}
 		<div align="right" style="margin:10px 45px 0 0;"><a href="/logout/">Logout</a></div>
 	{% else %}
 		<div align="right" style="margin:10px 45px 0 0;"><a onClick="javascript:showDiv('lf')" style="cursor:pointer;color:darkblue">Login</a></div>
 	{% endif %}
-    </ul>
 </div>
 <div id="content">{% block content %}{% endblock %}</div>
 </body>

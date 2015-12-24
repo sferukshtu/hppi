@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+div.dataTables_wrapper {
+        margin-bottom: 3em;
+    }
+td {vertical-align: text-top;}    
+</style>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+	var nav = 0 ? 'r<"boxed"t>r' : 'ifr<"top"><"boxed"t> lpr<"clear">';
+	var aTable = $('table.display').dataTable( {
+	    "bRetrieve": true,
+	    "bProcessing": true,
+	    "bDestroy": true,
+	    "sDom":  nav,
+	    "fnRowCallback": function(nRow, aData, iDisplayIndex){
+                $("td:first", nRow).html(iDisplayIndex +1);
+               return nRow;
+            },
+	    "aoColumnDefs": [
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 0 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 1 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 2 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 3 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 4 ] },
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 5 ] }  	      	      
+	      ],
+	    "columnDefs": [ {
+            "orderable": true,
+        } ],
+	    "aaSorting": [[0,'asc']],
+	    "iDisplayLength": 5,
+	    "aLengthMenu": [[5, 10, -1],[5, 10, 50]]
+		} );
+    } );
+</script>
+<div style="margin:5px 40px 10px 40px; width:1100px">
+    <h2>Публикации сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
+    <div align="right">
+    {% if current_user.is_authenticated %}
+    	<a href="/edit/staff:{{ prs.email }}">Редактировать свои данные</a><br>
+    	<a href="/download_pubs/staff:{{ prs.email }}">Скачать файл публикаций (xls)</a><br>
+    {% endif %}
+    	<a href="/card/staff:{{ prs.email }}">Посмотреть данные</a>    	
+    </div>
+<table cellspacing="0" cellpadding="0" class="display dataTable" style="width:100%" id="staff">
+  <thead>
+	<tr style="font-weight: bold;">
+		<th>&nbsp;&nbsp;</th>
+		<th>Заголовок</th>
+		<th>Авторы</th>
+		<th width="300">Абстракт</th>
+		<th>Дата Публикации</th>
+		<th>Журнал</th>
+		<th>Инфо</th>
+	</tr>
+  </thead>
+  <tbody>	
+{% for entry in prs.publist %}
+	<tr class="gradeC">
+		<td>{{ loop.index }}</td>
+		<td><a href="{{ entry.url }}">{{ entry.title }}</a></td>
+		<td>{{ entry.authors }}</td>
+		<td>{{ entry.abstract }}</td>
+		<td>{{ entry.date.strftime('%d-%m-%Y')  }}</td>
+		<td>{{ entry.journal }}</td>
+		<td>{{ entry.pubinfo }}</td>
+	</tr>
+{% endfor %}
+	</tbody>
+</table>
+</div>    
+{% endblock %}

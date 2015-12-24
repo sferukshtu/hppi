@@ -78,8 +78,8 @@ div.dataTables_wrapper {
 		<td>{{ entry.lab }}</td>
 		<td>{{ entry.pubs }}</td>
 		<td>
-    {% if current_user.is_authenticated %}
-    	<a href=/edit/staff:{{ entry.email }}>Ред.</a> /
+    {% if current_user.is_authenticated and (current_user.get_id() == entry.email or current_user.access == 2) %}
+    	<a href=/edit/staff:{{ entry.email }}>Ред.</a> / 
     {% endif %}
 		<a href="/card/staff:{{ entry.email }}">См.</a></td>		
 	</tr>
