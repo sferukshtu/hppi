@@ -18,12 +18,12 @@ def main():
     # Insert the user in the DB
     user = collection.find_one({"email": email})
     if not user:
-        collection.insert({"email": email, "password": pass_hash, "access": access})
+        collection.insert({"email": email, "password": pass_hash, "access": int(access)})
         collection.update_one({'email': email}, {'$set': data})
         print "User created."
     else:
-        print "User already present in DB. Password is updated"
-        collection.update_one({'email': email}, {'$set': {'password': pass_hash, "access": access}})
+        print "User already present in DB. Password and access right are updated"
+        collection.update_one({'email': email}, {'$set': {'password': pass_hash, "access": int(access)}})
 
 if __name__ == '__main__':
     main()
