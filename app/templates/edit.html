@@ -5,7 +5,7 @@
     <div align="right">
     	<a href=/card/staff:{{ prs.email }}>Посмотреть данные</a>
     </div>	
-    <form action="/edit/staff:{{ prs.email }}" method="POST" name="form">
+    <form action="/edit/staff:{{ prs.email }}" method="POST" name="form" enctype="multipart/form-data">
 {{ form.hidden_tag() }}
 {{ form.from_url }}
 <table cellpadding="2" cellspacing="2" border="0" style="margin-left:30px">

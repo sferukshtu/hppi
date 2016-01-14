@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
-div.dataTables_wrapper {
-        margin-bottom: 3em;
-    }
 td {vertical-align: text-top;}    
 </style>
 <script type="text/javascript" charset="utf-8">
@@ -24,7 +21,7 @@ td {vertical-align: text-top;}
 	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 2 ] },
 	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 3 ] },
 	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 4 ] },
-	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 5 ] }  	      	      
+	      { "asSorting": [ "desc", "asc" ], "aTargets": [ 5 ] }
 	      ],
 	    "columnDefs": [ {
             "orderable": true,
@@ -39,8 +36,8 @@ td {vertical-align: text-top;}
     <h2>Публикации сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
     <div align="right">
     {% if current_user.is_authenticated %}
-    	<a href="/edit/staff:{{ prs.email }}">Редактировать свои данные</a><br>
-    	<a href="/download_pubs/staff:{{ prs.email }}">Скачать файл публикаций (xls)</a><br>
+    	<a href="/edit/staff:{{ prs.email }}">Редактировать данные</a><br>
+    	<a href="/download/staff:{{ prs.email }}">Скачать файл публикаций (xls)</a><br>
     {% endif %}
     	<a href="/card/staff:{{ prs.email }}">Посмотреть данные</a>    	
     </div>
@@ -63,12 +60,12 @@ td {vertical-align: text-top;}
 		<td><a href="{{ entry.url }}">{{ entry.title }}</a></td>
 		<td>{{ entry.authors }}</td>
 		<td>{{ entry.abstract }}</td>
-		<td>{{ entry.date.strftime('%d-%m-%Y')  }}</td>
+		<td>{{ entry.date.strftime('%d-%m-%Y') }}</td>
 		<td>{{ entry.journal }}</td>
 		<td>{{ entry.pubinfo }}</td>
 	</tr>
 {% endfor %}
 	</tbody>
 </table>
-</div>    
+</div>
 {% endblock %}

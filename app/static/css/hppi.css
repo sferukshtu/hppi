@@ -6,6 +6,9 @@ body {
 h2 {
 	font-size:13px;
 }
+div.dataTables_wrapper {
+        margin-bottom: 3em;
+    }
 .boxed {
   -moz-border-radius: 7px;
   -khtml-border-radius: 7px; 
