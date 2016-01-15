@@ -17,7 +17,7 @@
 <div>
 {% endif %}
 	{% if current_user.is_authenticated %}
-		<div align="right" style="margin:10px 45px 0 0;"><a href="/logout/">Logout</a></div>
+		<div align="right" style="margin:10px 45px 0 0;">{{ current_user.name }}, вы в системе (<a href="/logout/">Logout</a>)</div>
 	{% else %}
 		<div align="right" style="margin:10px 45px 0 0;"><a onClick="javascript:showDiv('lf')" style="cursor:pointer;color:darkblue">Login</a></div>
 	{% endif %}

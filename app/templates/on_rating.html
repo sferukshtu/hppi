@@ -36,7 +36,20 @@ td {vertical-align: text-top;}
     } );
 </script>
 <div style="margin:5px 40px 10px 40px;">
-    <h2>Примерный перечень количественных показателей результативности труда научных работников</h2>
+    <h2>Перечень количественных показателей результативности труда научных работников</h2>
+    <form action="/on_rating/" method="POST" name="form" enctype="multipart/form-data">
+		<table cellspacing="0" cellpadding="0">
+		<tr><td><b>Загрузить другой файл показателей для подсчёта ПРНД:</b></td><td>{{ form.defs }}</td></tr> 	
+		<tr><td colspan=2><b>Формула для подсчёта ПРНД:</b><br>
+	    ПРНД = 
+	    {% if current_user.is_authenticated and current_user.access == 2 %}
+	    {{ form.prnd(class_="long") }}
+	    {% else %}
+	    {{ form.prnd(class_="long", disabled=True) }}	
+	    {% endif %}
+	    <button class="button" style="margin-left:10px" type="submit">Submit</button></td></tr>
+	    </table>
+    </form>
 <table cellspacing="0" cellpadding="0" class="display dataTable" style="width:100%" id="staff">
   <thead>
 	<tr style="font-weight: bold;">

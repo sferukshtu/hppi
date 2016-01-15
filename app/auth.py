@@ -3,9 +3,10 @@ from werkzeug.security import check_password_hash
 
 class Auth():
 
-    def __init__(self, email, access):
+    def __init__(self, email, access, first_name, surname):
         self.email = email
         self.access = access
+        self.name = first_name + " " + surname
 
     def is_authenticated(self):
         return True
@@ -18,6 +19,9 @@ class Auth():
 
     def get_id(self):
         return self.email
+
+    def name(self):
+        return self.name
 
     def access(self):
         return self.access

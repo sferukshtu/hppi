@@ -4,7 +4,7 @@ import xlwt
 import StringIO
 from flask import request, redirect, render_template, url_for, flash, Response
 from flask.ext.login import login_user, logout_user, login_required
-from .forms import LoginForm, PersonForm
+from .forms import LoginForm, PersonForm, CalcForm
 from .auth import Auth
 import datetime
 from werkzeug import secure_filename
@@ -50,60 +50,54 @@ def logout():
     return redirect("/")
 
 
-@app.route('/on_rating/')
+@app.route('/on_rating/', methods=['GET', 'POST'])
 def on_rating():
     form = makeform()
+    form = CalcForm(request.values)
     item = app.config['RATING'].find()
+    if request.method == 'POST':
+        app.config['SETTINGS'].update_one({'set_id': "prnd"}, {'$set': form.data})
+        if form.defs and Auth.is_authenticated and Auth.access == 2:
+            f = request.files['defs']
+            filename = secure_filename(f.filename)
+            if f and extension_ok(f.filename):
+                content = f.stream.read()
+                rd = xlrd.open_workbook(file_contents=content)
+                sheet = rd.sheet_by_index(0)
+                header = sheet.row_values(0)  # column headers
+                app.config['RATING'].drop()
+                for rownum in range(1, sheet.nrows):
+                    row = sheet.row_values(rownum)  # row values
+                    data = {}
+                    for el in range(len(header)):
+                        dt = row[el]
+                        data[header[el]] = dt  # pack data in a dictionary data[name] = value
+                    app.config['RATING'].insert(data)
+            app.config['SETTINGS'].update({'set_id': "prnd"}, {'$unset': {'defs': ""}})    
     return render_template('on_rating.html', item=item, form=form)
 
 
 @app.route('/card/staff:<email>')
 def card(email):
+    form = makeform()
     prs = app.config['STAFF'].find_one({"email": email})
     return render_template('card.html', prs=prs)
 
 
 @app.route('/pubs/staff:<email>', methods=['GET', 'POST'])
 def pubs(email):
+    form = makeform()
     prs = app.config['STAFF'].find_one({"email": email})
     return render_template('pubs.html', prs=prs)
-
-
-@app.route('/download/staff:<email>', methods=['GET', 'POST'])
-def download(email):
-    prs = app.config['STAFF'].find_one({"email": email})
-    output = StringIO.StringIO() # create a file-like object
-    book = xlwt.Workbook(encoding="utf-8")
-    sheet = book.add_sheet("Publications", cell_overwrite_ok=True)
-    sheet.write(0, 0, "title")
-    sheet.write(0, 1, "authors")
-    sheet.write(0, 2, "abstract")
-    sheet.write(0, 3, "url")
-    sheet.write(0, 4, "date")
-    sheet.write(0, 5, "journal")
-    sheet.write(0, 6, "pubinfo")
-    r = 1
-    for entry in prs["publist"]:
-        sheet.write(r, 0, entry["title"])
-        sheet.write(r, 1, entry["authors"])
-        sheet.write(r, 2, entry["abstract"])
-        sheet.write(r, 3, entry["url"])
-        sheet.write(r, 4, entry["date"].strftime('%d-%m-%Y') )
-        sheet.write(r, 5, entry["journal"])
-        sheet.write(r, 6, entry["pubinfo"])
-        r += 1
-    book.save(output)
-    xls = output.getvalue()
-    output.close()
-    return Response(xls, mimetype='application/vnd.ms-excel', headers={"Content-disposition": "attachment; filename=Publications.xls"})
 
 
 @app.route('/edit/staff:<email>', methods=['GET', 'POST'])
 @login_required
 def edit(email):
     form = PersonForm(request.values)
+    prs = app.config['STAFF'].find_one({"email": email})
     if request.method == 'POST' and form.validate_on_submit():
-        if form.data:
+        if form.data and Auth.is_authenticated and Auth.access > 0:
             bd = datetime.datetime.strptime(str(form.date_of_birth.data), "%Y-%m-%d")
             form.date_of_birth.data = bd
             error = 0
@@ -131,18 +125,14 @@ def edit(email):
                     else:
                         flash("Column names do not correspond to the specification!", category='error')
                         error = 1
-                else:
-                    flash("Something wrong with data upload (check file extension)!", category='error')
-                    error = 1
                 app.config['STAFF'].update_one({'email': email}, {'$set': form.data})
             else:
                 error = 1
                 flash("Something wrong with data update!", category='error')
-            if error==0:
+            if error == 0:
                 flash("Data updated successfully!", category='info')
         else:
             flash("Something wrong happened!", category='error')
-    prs = app.config['STAFF'].find_one({"email": email})
     form = PersonForm(request.values, first_name=prs["first_name"], middle_name=prs["middle_name"],
                       surname=prs["surname"], email=prs["email"], graduated=prs["graduated"],
                       graduated_year=prs["graduated_year"], date_of_birth=prs["date_of_birth"],
@@ -150,15 +140,45 @@ def edit(email):
     return render_template('edit.html', prs=prs, form=form)
 
 
+@app.route('/download/staff:<email>', methods=['GET', 'POST'])
+def download(email):
+    prs = app.config['STAFF'].find_one({"email": email})
+    output = StringIO.StringIO()  # create a file-like object
+    book = xlwt.Workbook(encoding="utf-8")
+    sheet = book.add_sheet("Publications", cell_overwrite_ok=True)
+    sheet.write(0, 0, "title")
+    sheet.write(0, 1, "authors")
+    sheet.write(0, 2, "abstract")
+    sheet.write(0, 3, "url")
+    sheet.write(0, 4, "date")
+    sheet.write(0, 5, "journal")
+    sheet.write(0, 6, "pubinfo")
+    r = 1
+    for entry in prs["publist"]:
+        sheet.write(r, 0, entry["title"])
+        sheet.write(r, 1, entry["authors"])
+        sheet.write(r, 2, entry["abstract"])
+        sheet.write(r, 3, entry["url"])
+        sheet.write(r, 4, entry["date"].strftime('%d-%m-%Y'))
+        sheet.write(r, 5, entry["journal"])
+        sheet.write(r, 6, entry["pubinfo"])
+        r += 1
+    book.save(output)
+    xls = output.getvalue()
+    output.close()
+    return Response(xls, mimetype='application/vnd.ms-excel', headers={"Content-disposition": "attachment; filename=Publications.xls"})
+
+
 @lm.user_loader
 def load_user(email):
     u = app.config['STAFF'].find_one({"email": email})
     if not u:
         return None
-    return Auth(u['email'], u['access'])
+    return Auth(u['email'], u['access'], u['first_name'], u['surname'])
 
-# return whether file's extension is ok or not
+
 def extension_ok(filename):
+    """ return whether file's extension is ok or not"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in app.config['FILE_EXTENSIONS']
 

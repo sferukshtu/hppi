@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from app import app
 from flask.ext.wtf import Form
 from flask.ext.admin.form.upload import FileUploadField
 from wtforms import StringField, PasswordField, HiddenField, DateField
@@ -30,5 +31,14 @@ class PersonForm(Form):
     date_of_birth = DateField('День рождения', format='%d-%m-%Y')
     degree = StringField('Степень')
     lab = StringField('Лаборатория')
+    prnd = StringField('ПРНД')
     pubs = FileUploadField('File', namegen=prefix_name)
     # from_url = HiddenField('', validators=[DataRequired()])
+
+
+class CalcForm(Form):
+    """Calc form to calculate ratings"""
+    val = app.config['SETTINGS'].find_one({"set_id": "prnd"})
+    formula = val["prnd"] if val["prnd"] else "pub_num+o_num+doc_num+exp_num+j_num+res_num+ms_num+phd_num+st_num+conf_num+pop_num+infl_num+ser_num"
+    prnd = StringField('Формула', default=formula)
+    defs = FileUploadField('File', namegen=prefix_name)
