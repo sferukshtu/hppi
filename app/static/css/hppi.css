@@ -84,3 +84,6 @@ a:link,a:visited {
 a:hover,a:active {
     color: #999; text-decoration: none;
 }
+
+input.long {width:900px;}
+input.short {width:30px; height:14px; margin:5px 0 0 3px;}

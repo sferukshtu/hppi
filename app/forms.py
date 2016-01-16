@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, HiddenField, DateField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 import os.path as op
+from collections import defaultdict
 
 
 def prefix_name(obj, file_data):
@@ -32,7 +33,7 @@ class PersonForm(Form):
     degree = StringField('Степень')
     lab = StringField('Лаборатория')
     prnd = StringField('ПРНД')
-    pubs = FileUploadField('File', namegen=prefix_name)
+    publist = FileUploadField('File', namegen=prefix_name)
     # from_url = HiddenField('', validators=[DataRequired()])
 
 
@@ -42,3 +43,27 @@ class CalcForm(Form):
     formula = val["prnd"] if val["prnd"] else "pub_num+o_num+doc_num+exp_num+j_num+res_num+ms_num+phd_num+st_num+conf_num+pop_num+infl_num+ser_num"
     prnd = StringField('Формула', default=formula)
     defs = FileUploadField('File', namegen=prefix_name)
+
+
+class RatingForm(Form):
+    """Rating form to calc PRND"""
+    val = app.config['RATING'].find({}, {"code": 1})
+    # prs = app.config['STAFF'].find_one({"email": email})
+    # arr = prs["prnd_data"][0]
+    # print email
+    for entry in val:
+        # c = StringField(default=arr[str(entry["code"])])
+        c = StringField()
+        exec(entry["code"] + " = c")
+
+
+class key_values_string():
+
+    def __init__(self, dd):
+        self.dd = dd
+
+    def packed(self):
+        val_dict = self.dd
+        # vls = ", ".join(['{}={}'.format(k, v) for k, v in val_dict.iteritems()])
+        for k, v in val_dict.iteritems():
+            exec(k + " = v")

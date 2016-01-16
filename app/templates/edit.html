@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+td {vertical-align: text-top;}    
+</style>
 <div style="margin:5px 40px 10px 40px; width:600px">
     <h2>Редактирование карточки сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
     <div align="right">
@@ -19,14 +22,45 @@
 	<tr><td><label class="control-label" for="date_of_birth"></label>День Рождения</td><td> {{ form.date_of_birth }}</td></tr>
 	<tr><td><label class="control-label" for="degree"></label>Степень</td><td>{{ form.degree }}</td></tr>
 	<tr><td><label class="control-label" for="lab"></label>Лаборатория</td><td>{{ form.lab }}</td></tr>
-    <tr><td><label class="control-label" for="lab"></label>ПРНД</td><td>{{ prs.prnd }} <a href="/prnd/">Пересчитать</a></td></tr>
-	<tr><td><a href="/pubs/staff:{{ prs.email }}">Публикации</a></td><td>{{ form.pubs }} </td></tr>
+    <tr><td><label class="control-label" for="lab"></label>Публикаций</td><td>{{ prs.pubs }}</td></tr>
+    <tr><td><label class="control-label" for="lab"></label>ПРНД</td><td>{{ prs.prnd }} <a onClick="javascript:showDiv('prnd')" style="cursor:pointer;">Пересчитать</a></td></tr>
+	<tr><td><a href="/pubs/staff:{{ prs.email }}">Публикации</a></td><td>{{ form.publist }} </td></tr>
 	</tr>
 	</tbody>
-<table>
-</div>
-	<br>
-	<button class="button" style="margin-left:500px" type="submit">Submit</button>
-</form>
 </table>
+    <br>
+    <button class="button" style="margin-left:340px" type="submit">Submit</button>
+    </form>
+    <div style="display:none; width:800px; position:absolute; top:80px; left:500px" id="prnd" class="boxed_sh">
+        <form action="/card/staff:{{ prs.email }}" method="POST" name="pform">
+        <div style="display:inline;float:right; margin:-2px 0px 0 0px;">
+        <a id = "ogif" onClick = "hideDiv('prnd');" style="cursor: pointer; border:0px; text-decoration: none;" >
+            <div style="color:#3F4659; font-size: 18px; margin-top:-2px" >&times;</div>
+        </a>
+        </div>
+        <table cellspacing="0" cellpadding="0" class="display dataTable" style="width:100%" id="staff">
+          <thead>
+            <tr style="font-weight: bold;">
+                <th>&nbsp;&nbsp;</th>
+                <th>Показатель</th>
+                <th width="100">Единица измерения</th>
+                <th width="150">Код для подсчёта<div align="right"><a href="/on_rating/" style="color:blue">Справка</a></div></th>
+            </tr>
+          </thead>
+          <tbody>   
+        {% for entry in item %}
+            <tr class="gradeC">
+                <td>{{ loop.index }}</td>
+                <td>{{ entry.name }}</td>
+                <td>{{ entry.unit }}</td>
+                <td align="right">{{ entry.code }} = {{ pform[entry.code](class_="short", value=prnd_data[entry.code]) }} </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <button class="button" style="margin-left:340px" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

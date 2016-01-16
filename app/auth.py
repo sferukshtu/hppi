@@ -18,13 +18,13 @@ class Auth():
         return False
 
     def get_id(self):
-        return self.email
+        return unicode(self.email)
 
     def name(self):
-        return self.name
+        return unicode(self.name)
 
     def access(self):
-        return self.access
+        return unicode(self.access)
 
     @staticmethod
     def validate_login(password_hash, password):

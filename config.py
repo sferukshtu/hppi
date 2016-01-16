@@ -8,5 +8,5 @@ DATABASE = MongoClient()[DB_NAME]
 STAFF = DATABASE.staff
 RATING = DATABASE.rating
 SETTINGS = DATABASE.settings
-
+FILE_EXTENSIONS = set(['xls', 'xlsx'])
 DEBUG = True
