@@ -21,7 +21,7 @@ td {vertical-align: text-top;}
 	<tr><td>День Рождения</td><td>{{ prs.date_of_birth.strftime('%d-%m-%Y') }}</td></tr>
 	<tr><td>Степень</td><td>{{ prs.degree }}</td></tr>
 	<tr><td>Лаборатория</td><td>{{ prs.lab }}</td></tr>
-    <tr><td>Публикаций</td><td>{{ prs.pubs }}</td></tr>    
+    <tr><td>Публикаций</td><td>{{ prs.pubsnum }}</td></tr>    
     <tr><td>ПРНД</td><td>{{ prs.prnd }}</td></tr>
 	<tr><td>Публикации</td><td><a href=/pubs/staff:{{ prs.email }}>Список публикаций</a><br><a href="/download/staff:{{ prs.email }}">Скачать файл публикаций</a></td></tr>
 	</tr>

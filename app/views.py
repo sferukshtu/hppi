@@ -129,6 +129,8 @@ def edit(email):
                         data["art_id"] = rownum
                         print data
                         app.config['STAFF'].update({'email': email}, {'$addToSet': {'publist': {'$each': [data]}}}, True, True)
+                    pubsnum = rownum if rownum else prs["pubsnum"]
+                    app.config['STAFF'].update_one({'email': email}, {'$set': {'pubsnum': pubsnum}})  # otherwise gets 0
                 else:
                     flash("Column names do not correspond to the specification!", category='error')
                     error = 1

@@ -40,7 +40,7 @@ def main():
                 data[header[el]] = dt  # pack data in a dictionary data[name] = value
             if collection == 'staff':
                 data["access"] = 1  # data access right by default (can edit only themselves)
-                data["pubs"] = 0  # num of pubs
+                data["pubsnum"] = 0  # num of pubs
                 data["prnd"] = 0  # for prnd
                 data["prnd_data"] = {}
                 data["publist"] = {}
