@@ -19,6 +19,7 @@ def main():
     sheet = rd.sheet_by_index(0)
 
     header = sheet.row_values(0)  # column headers
+    db.staff.update({'email': email}, {'$unset': {'publist': []}})
     if fields(set(header)) == 0:
         for rownum in range(1, sheet.nrows):
             row = sheet.row_values(rownum)  # row values

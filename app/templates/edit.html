@@ -22,8 +22,9 @@ td {vertical-align: text-top;}
 	<tr><td><label class="control-label" for="date_of_birth"></label>День Рождения</td><td> {{ form.date_of_birth }}</td></tr>
 	<tr><td><label class="control-label" for="degree"></label>Степень</td><td>{{ form.degree }}</td></tr>
 	<tr><td><label class="control-label" for="lab"></label>Лаборатория</td><td>{{ form.lab }}</td></tr>
-    <tr><td><label class="control-label" for="lab"></label>Публикаций</td><td>{{ prs.pubs }}</td></tr>
-    <tr><td><label class="control-label" for="lab"></label>ПРНД</td><td>{{ prs.prnd }} <a onClick="javascript:showDiv('prnd')" style="cursor:pointer;">Пересчитать</a></td></tr>
+    <tr><td><label class="control-label" for="lab"></label>Публикаций</td><td>{{ prs.pubs }}<input type="hidden" name="pubs" value={{ prs.pubs }}></td></tr>
+    <tr><td><label class="control-label" for="lab"></label>ПРНД</td><td>{{ prs.prnd }} <input type="hidden" name="prnd" value={{ prs.prnd }}>
+                                                        <a onClick="javascript:showDiv('prnd')" style="cursor:pointer;">Пересчитать</a></td></tr>
 	<tr><td><a href="/pubs/staff:{{ prs.email }}">Публикации</a></td><td>{{ form.publist }} </td></tr>
 	</tr>
 	</tbody>

@@ -103,7 +103,7 @@ def edit(email):
     form = PersonForm(request.values, first_name=prs["first_name"], middle_name=prs["middle_name"],
                       surname=prs["surname"], email=prs["email"], graduated=prs["graduated"],
                       graduated_year=prs["graduated_year"], date_of_birth=prs["date_of_birth"],
-                      degree=prs["degree"], lab=prs["lab"])
+                      degree=prs["degree"], lab=prs["lab"])  # keep defaul values here to see updated results on the edit page
     # val_dict = {}
     prnd_data = prs["prnd_data"][0] if prs["prnd_data"] else {}
     pform = RatingForm(request.values)
@@ -116,6 +116,7 @@ def edit(email):
             error = 0
             f = request.files['publist']
             rownum = 0
+            app.config['STAFF'].update_one({'email': email}, {'$set': form.data})
             if f and extension_ok(f.filename):
                 content = f.stream.read()
                 rd = xlrd.open_workbook(file_contents=content)
@@ -126,13 +127,11 @@ def edit(email):
                     for rownum in range(1, sheet.nrows):
                         data = xls_to_data(sheet, rd, rownum, header)
                         data["art_id"] = rownum
+                        print data
                         app.config['STAFF'].update({'email': email}, {'$addToSet': {'publist': {'$each': [data]}}}, True, True)
                 else:
                     flash("Column names do not correspond to the specification!", category='error')
                     error = 1
-            pubsnum = rownum if rownum else prs["pubs"]
-            app.config['STAFF'].update_one({'email': email}, {'$set': form.data})
-            app.config['STAFF'].update_one({'email': email}, {'$set': {'pubsnum': pubsnum}})
         else:
             error = 1
             flash("Something wrong with data update!", category='error')
