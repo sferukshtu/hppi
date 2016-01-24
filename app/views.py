@@ -32,6 +32,12 @@ def index():
     return render_template('index.html', item=item, form=form)
 
 
+@app.route('/help/')
+def help():
+    form = makeform()
+    return render_template('help.html', form=form)
+
+
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = makeform()
@@ -54,7 +60,7 @@ def on_rating():
     form = makeform()
     cform = CalcForm(request.values)
     item = app.config['RATING'].find()
-    if request.method == 'POST' and Auth.is_authenticated and current_user.access == 2 and cform.validate_on_submit():
+    if request.method == 'POST' and Auth.is_authenticated and current_user.access == 2:
         app.config['SETTINGS'].update_one({'set_id': "prnd"}, {'$set': cform.data})
         f = request.files['defs']
         if f and extension_ok(f.filename):
@@ -116,6 +122,8 @@ def edit(email):
             error = 0
             f = request.files['publist']
             rownum = 0
+            form.publist.data = prs["publist"]
+#            print form.publist.data 
             app.config['STAFF'].update_one({'email': email}, {'$set': form.data})
             if f and extension_ok(f.filename):
                 content = f.stream.read()
@@ -127,7 +135,7 @@ def edit(email):
                     for rownum in range(1, sheet.nrows):
                         data = xls_to_data(sheet, rd, rownum, header)
                         data["art_id"] = rownum
-                        print data
+                        # print data
                         app.config['STAFF'].update({'email': email}, {'$addToSet': {'publist': {'$each': [data]}}}, True, True)
                     pubsnum = rownum if rownum else prs["pubsnum"]
                     app.config['STAFF'].update_one({'email': email}, {'$set': {'pubsnum': pubsnum}})  # otherwise gets 0
@@ -142,6 +150,7 @@ def edit(email):
         else:
             flash("Something wrong happened!", category='error')
     item = app.config['RATING'].find()
+    form.publist.data = ""
     return render_template('edit.html', prs=prs, form=form, item=item, pform=pform, prnd_data=prnd_data)
 
 

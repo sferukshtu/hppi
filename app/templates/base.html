@@ -12,10 +12,14 @@
 {% include "flash.html" %}
 {% if request.path != "/" %}
 <div style="position:absolute; padding: 0 4px 0 20px;">
-    	<a href="/">На главную страницу</a>
+    	<a href="/">На главную страницу</a> / <a href="/help/">Справка (как пользоваться БД)</a>
 </div>
-<div>
+{% else %}
+<div style="position:absolute; padding: 0 4px 0 20px;">
+        <a href="/help/">Справка (как пользоваться БД)</a>
+</div>
 {% endif %}
+<div>
 	{% if current_user.is_authenticated %}
 		<div align="right" style="margin:10px 45px 0 0;">{{ current_user.name }}, вы в системе (<a href="/logout/">Logout</a>)</div>
 	{% else %}

@@ -52,7 +52,7 @@ def main():
                     if not user:
                         client.insert_one(data)  # filling mongodb's collection named "staff" with data
                     else:
-                        print "Staff member", data["surname"], "with email", data["email"], "already present in DB, entry is updated"
+                        print "Staff member already present in DB, entry is updated"
                         client.update_one({'email': data["email"]}, {'$set': data})
             else:
                 client.drop()

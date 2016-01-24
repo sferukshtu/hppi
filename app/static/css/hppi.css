@@ -3,8 +3,11 @@ body {
     font-size: 12px; 
     padding: 0;
 }
+h1 {
+	font-size:15px; 
+}
 h2 {
-	font-size:13px;
+  font-size:14px; 
 }
 div.dataTables_wrapper {
         margin-bottom: 3em;

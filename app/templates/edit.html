@@ -3,7 +3,7 @@
 <style>
 td {vertical-align: text-top;}    
 </style>
-<div style="margin:5px 40px 10px 40px; width:600px">
+<div style="margin:5px 40px 10px 40px; width:800px">
     <h2>Редактирование карточки сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
     <div align="right">
     	<a href=/card/staff:{{ prs.email }}>Посмотреть данные</a>
@@ -13,9 +13,9 @@ td {vertical-align: text-top;}
 {{ form.from_url }}
 <table cellpadding="2" cellspacing="2" border="0" style="margin-left:30px">
   <tbody>	
-	<tr><td style="width:150px"><label class="control-label" for="first_name"></label>Имя</td><td>{{ form.first_name }}</td></tr>
+	<tr><td style="width:150px"><label class="control-label" for="first_name"></label>Имя</td><td>{{ form.first_name }} <font color="red">(*)</font></td></tr>
 	<tr><td><label class="control-label" for="middle_name"></label>Отчество</td><td>{{ form.middle_name }}</td></tr>
-	<tr><td><label class="control-label" for="surname"></label>Фамилия</td><td>{{ form.surname }}</td></tr>
+	<tr><td><label class="control-label" for="surname"></label>Фамилия</td><td>{{ form.surname }} <font color="red">(*)</font></td></tr>
 	<tr><td>Email</td><td>{{ prs.email }}</td></tr>
 	<tr><td><label class="control-label" for="graduated"></label>Образование</td><td>{{ form.graduated }}</td></tr>
 	<tr><td><label class="control-label" for="graduated_year"></label>Год Окончания</td><td>{{ form.graduated_year }}</td></tr>

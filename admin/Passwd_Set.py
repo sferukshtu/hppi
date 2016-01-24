@@ -19,6 +19,10 @@ def main():
     user = collection.find_one({"email": email})
     if not user:
         collection.insert({"email": email, "password": pass_hash, "access": int(access)})
+        data["pubsnum"] = 0  # num of pubs
+        data["prnd"] = 0  # for prnd
+        data["prnd_data"] = {}
+        data["publist"] = {}                                                                
         collection.update_one({'email': email}, {'$set': data})
         print "User created."
     else:

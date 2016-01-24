@@ -40,7 +40,7 @@ class PersonForm(Form):
 class CalcForm(Form):
     """Calc form to calculate ratings"""
     val = app.config['SETTINGS'].find_one({"set_id": "prnd"})
-    formula = val["prnd"] if val["prnd"] else "pub_num+o_num+doc_num+exp_num+j_num+res_num+ms_num+phd_num+st_num+conf_num+pop_num+infl_num+ser_num"
+    formula = val["prnd"]  # if val["prnd"] else formula = "pub_num+o_num+doc_num+exp_num+j_num+res_num+ms_num+phd_num+st_num+conf_num+pop_num+infl_num+ser_num"
     prnd = StringField('Формула', default=formula)
     defs = FileUploadField('File', namegen=prefix_name)
 

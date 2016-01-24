@@ -3,7 +3,7 @@
 <style>
 td {vertical-align: text-top;}    
 </style>
-<div style="margin:5px 40px 10px 40px; width:600px">
+<div style="margin:5px 40px 10px 40px; width:800px">
     <h2>Карточка сотрудника {{ prs.first_name }} {{ prs.middle_name }} {{ prs.surname }}</h2>
     {% if current_user.is_authenticated and (current_user.get_id() == prs.email or current_user.access == 2) %}
     <div align="right">
