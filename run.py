@@ -1,6 +1,8 @@
 from app import app
 import os
 
+""" watch the templates add reload app if something is changed there """
+""" app/templates/count.html is updated in on_rating.view to reload app automatically if collection rating is changed """
 
 extra_dirs = ['app/templates']
 extra_files = extra_dirs[:]

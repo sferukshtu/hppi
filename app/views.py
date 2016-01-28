@@ -74,9 +74,8 @@ def on_rating():
                 data = xls_to_data(sheet, rd, rownum, header)
                 app.config['RATING'].insert(data)
         app.config['SETTINGS'].update({'set_id': "prnd"}, {'$unset': {'defs': ""}})
+        os.system("echo + >> app/templates/count.html")  # app to reload upon changes in rating collection
         flash("Data updated successfully!", category='info')
-        os.system("pwd")
-        os.system("echo + >> app/templates/count.html")
     return render_template('on_rating.html', item=item, form=form, cform=cform)
 
 
