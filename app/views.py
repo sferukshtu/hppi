@@ -7,7 +7,8 @@ from flask.ext.login import login_user, logout_user, login_required, current_use
 from .forms import LoginForm, PersonForm, CalcForm, RatingForm
 from .auth import Auth
 import datetime
- 
+import os
+
 
 def makeform():
     form = LoginForm(request.values, from_url=request.path)
@@ -74,6 +75,8 @@ def on_rating():
                 app.config['RATING'].insert(data)
         app.config['SETTINGS'].update({'set_id': "prnd"}, {'$unset': {'defs': ""}})
         flash("Data updated successfully!", category='info')
+        os.system("pwd")
+        os.system("echo + >> app/templates/count.html")
     return render_template('on_rating.html', item=item, form=form, cform=cform)
 
 
