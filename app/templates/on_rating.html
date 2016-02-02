@@ -42,7 +42,7 @@ td {vertical-align: text-top;}
 		{% if current_user.is_authenticated and current_user.access == 2 %}
 		<tr><td><b>Загрузить другой файл показателей для подсчёта ПРНД:</b></td><td>{{ cform.defs }}</td></tr> 	
 		{% endif %}
-		<tr><td colspan=2><b>Формула для подсчёта ПРНД:</b><br>
+		<tr><td colspan=2><b>Формула для подсчёта ПРНД:</b> (<a href=/on_rating/>перегрузите страницу</a>, если формула поменялась)<br>
 	    ПРНД = 
 	    {% if current_user.is_authenticated and current_user.access == 2 %}
 	    {{ cform.prnd(class_="long") }}

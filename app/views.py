@@ -70,12 +70,17 @@ def on_rating():
             sheet = rd.sheet_by_index(0)
             header = sheet.row_values(0)  # column headers
             app.config['RATING'].drop()
+            addlist = []
             for rownum in range(1, sheet.nrows):
                 data = xls_to_data(sheet, rd, rownum, header)
                 app.config['RATING'].insert(data)
-        app.config['SETTINGS'].update({'set_id': "prnd"}, {'$unset': {'defs': ""}})
+                addlist.append(data['code'])
+            formula = "+".join(addlist)
+            print formula
+        app.config['SETTINGS'].update({'set_id': "prnd"}, {'$set': {'prnd': formula}})
         os.system("echo + >> app/templates/count.html")  # app to reload upon changes in rating collection
-        flash("Data updated successfully!", category='info')
+        flash("Data updated successfully!", category='success')
+        flash("Don't forget to edit formula if parameters are changed!", category='info')
     return render_template('on_rating.html', item=item, form=form, cform=cform)
 
 
@@ -90,6 +95,7 @@ def card(email):
         val = app.config['SETTINGS'].find_one()
         math = val["prnd"]
         for k, v in pform.data.iteritems():
+            print k
             v = int(v) if v else 0
             exec(k + " = v")
         app.config['STAFF'].update_one({'email': email}, {'$set': {'prnd': eval(math)}})
@@ -125,7 +131,7 @@ def edit(email):
             f = request.files['publist']
             rownum = 0
             form.publist.data = prs["publist"]
-#            print form.publist.data 
+#            print form.publist.data
             app.config['STAFF'].update_one({'email': email}, {'$set': form.data})
             if f and extension_ok(f.filename):
                 content = f.stream.read()

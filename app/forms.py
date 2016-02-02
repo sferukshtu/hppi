@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, HiddenField, DateField
 from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 import os.path as op
-from collections import defaultdict
+# from collections import defaultdict
 
 
 def prefix_name(obj, file_data):
