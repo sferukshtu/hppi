@@ -12,6 +12,7 @@ h2 {
 div.dataTables_wrapper {
         margin-bottom: 3em;
     }
+
 .boxed {
   -moz-border-radius: 7px;
   -khtml-border-radius: 7px; 
@@ -81,8 +82,8 @@ div.dataTables_wrapper {
   background:#fff
 }
 a:link,a:visited {
-    color: #004155;
-    text-decoration: none;
+    color: #004177;
+    text-decoration: underline;
 }
 a:hover,a:active {
     color: #999; text-decoration: none;

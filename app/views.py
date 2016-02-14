@@ -2,7 +2,7 @@ from app import app, lm
 import xlrd
 import xlwt
 import StringIO
-from flask import request, redirect, render_template, url_for, flash, Response
+from flask import request, redirect, render_template, url_for, flash, Response, send_from_directory
 from flask.ext.login import login_user, logout_user, login_required, current_user
 from .forms import LoginForm, PersonForm, CalcForm, RatingForm
 from .auth import Auth
@@ -76,8 +76,8 @@ def on_rating():
                 app.config['RATING'].insert(data)
                 addlist.append(data['code'])
             formula = "+".join(addlist)
-            print formula
-        app.config['SETTINGS'].update({'set_id': "prnd"}, {'$set': {'prnd': formula}})
+            # print formula
+            app.config['SETTINGS'].update({'set_id': "prnd"}, {'$set': {'prnd': formula}})
         os.system("echo + >> app/templates/count.html")  # app to reload upon changes in rating collection
         flash("Data updated successfully!", category='success')
         flash("Don't forget to edit formula if parameters are changed!", category='info')
@@ -95,7 +95,7 @@ def card(email):
         val = app.config['SETTINGS'].find_one()
         math = val["prnd"]
         for k, v in pform.data.iteritems():
-            print k
+            # print k
             v = int(v) if v else 0
             exec(k + " = v")
         app.config['STAFF'].update_one({'email': email}, {'$set': {'prnd': eval(math)}})
@@ -189,6 +189,12 @@ def download(email):
     xls = output.getvalue()
     output.close()
     return Response(xls, mimetype='application/vnd.ms-excel', headers={"Content-disposition": "attachment; filename=Publications.xls"})
+
+
+@app.route('/pubs_template/', methods=['GET', 'POST'])
+def pubs_template():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'Brazhkin_pubs.xlsx', mimetype='application/vnd.ms-excel',
+                               attachment_filename='PublicationsTemplate.xls', as_attachment=True)
 
 
 @lm.user_loader
